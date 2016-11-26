@@ -14,12 +14,9 @@ func gen():
 		for j in range(-5,5):
 			set_cell(Vector2(i,j))
 
-
-
-
 func set_cell(pos):
 	ground.set_cell(pos.x,pos.y,2)
-	
+
 func set_roof(size):
 	var x_l = size.x/2-size.x
 	var x_r = size.x/2
@@ -38,9 +35,7 @@ func set_roof(size):
 				if ground.get_cell(x,y-1) == -1:
 					roof.set_cell(x,y-1,3)
 					walls.set_cell(x,y-6,1)
-				
-	
-	
+
 func clear():
 	roof.clear()
 	walls.clear()

@@ -1,9 +1,10 @@
 extends Node2D
 
+onready var tm_roof = get_parent().get_node("terrain/roof")
 onready var bullet_spawn = get_node("bullet_spawn")
 var bullet_ins = preload ("res://Scenes/bullet.tscn")
 onready var anim = get_node("anim")
-var current_anim = ""
+var current_anim = "idle_down"
 var new_anim = "idle_down"
 var walk = false
 var walk_dir = Vector2(0,0)
@@ -11,22 +12,14 @@ var speed = 60
 
 var health_current = 2
 var health_max = 12
-
-var r
-
 onready var health_bar = get_tree().get_current_scene().get_node("UI/health_bar")
 
 func _ready():
-#	get_viewport().set_size_override_stretch(
-	r = get_viewport().get_rect()
-	r = Rect2(r.pos,Vector2(320,180))
-	print (get_viewport().get_rect())
 	health_bar.health = health_current
 	health_bar.health_max = health_max
 	randomize()
 	anim.play(current_anim)
 	set_process(true)
-
 
 func _process(delta):
 	#Стрельба
@@ -39,20 +32,19 @@ func _process(delta):
 	
 	#Движение
 	walk_dir = Vector2 (0,0)
-	if (Input.is_action_pressed("ig_up")):
+	if (Input.is_action_pressed("ig_up") and tm_roof.get_cellv(tm_roof.world_to_map(get_pos().linear_interpolate( get_pos() + Vector2(0,-1)*speed,delta))) == -1):
 		walk_dir.y = -1
-	elif (Input.is_action_pressed("ig_down")):
+	elif (Input.is_action_pressed("ig_down") and tm_roof.get_cellv(tm_roof.world_to_map(get_pos().linear_interpolate( get_pos() + Vector2(0,1)*speed,delta))) == -1):
 		walk_dir.y = 1
-	if (Input.is_action_pressed("ig_right")):
+	if (Input.is_action_pressed("ig_right") and tm_roof.get_cellv(tm_roof.world_to_map(get_pos().linear_interpolate( get_pos() + Vector2(1,0)*speed,delta))) == -1):
 		walk_dir.x = 1
-	elif (Input.is_action_pressed("ig_left")):
+	elif (Input.is_action_pressed("ig_left") and tm_roof.get_cellv(tm_roof.world_to_map(get_pos().linear_interpolate( get_pos() + Vector2(-1,0)*speed,delta))) == -1):
 		walk_dir.x = -1
 		
 	if (walk_dir.abs() == Vector2(1,1)):
 		walk_dir = walk_dir*0.75
-	if get_node("area").get_overlapping_bodies().size() > 0 and get_node("area").get_overlapping_bodies()[0].get_name() == "roof":
-		print("COLLIDE!")
-	set_pos(get_pos().linear_interpolate( get_pos() + walk_dir*speed,delta))
+	var new_pos = get_pos().linear_interpolate( get_pos() + walk_dir*speed,delta)
+	set_pos(new_pos)
 	
 	#Анимация
 	if walk_dir != Vector2(0,0):

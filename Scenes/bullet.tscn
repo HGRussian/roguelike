@@ -8,7 +8,7 @@ radius = 2.0
 [sub_resource type="GDScript" id=2]
 
 resource/name = "bullet"
-script/source = "extends Area2D\n\nvar lv = Vector2 (0,0)\nvar speed = 300\nvar vec = Vector2 (1,0)\n\nfunc _ready():\n\tset_process(true)\n\nfunc _process(delta):\n\tset_pos(get_pos() + (vec*speed*delta))\n\nfunc _draw():\n\tdraw_circle(Vector2(0,0),2, Color (1,0.5,0))\n\tdraw_circle(Vector2(0,0),1, Color (1,1,0))\n\nfunc _on_time_timeout():\n\tqueue_free()\n"
+script/source = "extends Area2D\n\nvar lv = Vector2 (0,0)\nvar speed = 200\nvar vec = Vector2 (1,0)\nonready var roof = get_parent().get_parent().get_node(\"terrain/roof\")\n\nfunc _ready():\n\tset_process(true)\n\nfunc _process(delta):\n\tlv = get_pos() + (vec*speed*delta)\n\tif (roof.get_cellv(roof.world_to_map(lv)) == -1):\n\t\tset_pos(lv)\n\telse:\n\t\tset_pos(lv)\n\t\tqueue_free()\n\nfunc _draw():\n\tdraw_circle(Vector2(0,0),2, Color (\"#fbf236\"))\n\tdraw_circle(Vector2(0,0),1, Color (\"#df7126\"))\n\nfunc _on_time_timeout():\n\tqueue_free()\n"
 
 [node name="bullet" type="Area2D"]
 
