@@ -25,7 +25,7 @@ func _process(delta):
 
 func _draw():
 	if debug_on:
-		draw_string(font, Vector2(2,20), "FPS: "+str(OS.get_frames_per_second()))
+		draw_string(font, Vector2(2,40), "FPS: "+str(OS.get_frames_per_second()))
 
 func _on_up_timeout():
 	update()

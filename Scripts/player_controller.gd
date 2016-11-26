@@ -9,12 +9,18 @@ var walk = false
 var walk_dir = Vector2(0,0)
 var speed = 60
 
-var health_current = 8
-var health_max = 8
+var health_current = 2
+var health_max = 12
+
+var r
 
 onready var health_bar = get_tree().get_current_scene().get_node("UI/health_bar")
 
 func _ready():
+#	get_viewport().set_size_override_stretch(
+	r = get_viewport().get_rect()
+	r = Rect2(r.pos,Vector2(320,180))
+	print (get_viewport().get_rect())
 	health_bar.health = health_current
 	health_bar.health_max = health_max
 	randomize()
@@ -33,18 +39,18 @@ func _process(delta):
 	
 	#Движение
 	walk_dir = Vector2 (0,0)
-	if (Input.is_action_pressed("ui_up")):
+	if (Input.is_action_pressed("ig_up")):
 		walk_dir.y = -1
-	elif (Input.is_action_pressed("ui_down")):
+	elif (Input.is_action_pressed("ig_down")):
 		walk_dir.y = 1
-	if (Input.is_action_pressed("ui_right")):
+	if (Input.is_action_pressed("ig_right")):
 		walk_dir.x = 1
-	elif (Input.is_action_pressed("ui_left")):
+	elif (Input.is_action_pressed("ig_left")):
 		walk_dir.x = -1
 		
 	if (walk_dir.abs() == Vector2(1,1)):
 		walk_dir = walk_dir*0.75
-	set_pos(get_pos() + walk_dir*speed*delta)
+	set_pos(get_pos().linear_interpolate( get_pos() + walk_dir*speed,delta))
 	
 	#Анимация
 	if walk_dir != Vector2(0,0):
