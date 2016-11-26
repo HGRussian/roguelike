@@ -50,6 +50,8 @@ func _process(delta):
 		
 	if (walk_dir.abs() == Vector2(1,1)):
 		walk_dir = walk_dir*0.75
+	if get_node("area").get_overlapping_bodies().size() > 0 and get_node("area").get_overlapping_bodies()[0].get_name() == "roof":
+		print("COLLIDE!")
 	set_pos(get_pos().linear_interpolate( get_pos() + walk_dir*speed,delta))
 	
 	#Анимация

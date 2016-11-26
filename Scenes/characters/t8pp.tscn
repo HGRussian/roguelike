@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=1]
+[gd_scene load_steps=13 format=1]
 
 [ext_resource path="res://Scripts/player_controller.gd" type="Script" id=1]
 [ext_resource path="res://Art/shadow_n.png" type="Texture" id=2]
@@ -100,6 +100,11 @@ tracks/0/interp = 1
 tracks/0/imported = false
 tracks/0/keys = { "times":FloatArray( 0, 0.1, 0.2, 0.3 ), "transitions":FloatArray( 1, 1, 1, 1 ), "update":1, "values":[ 9, 10, 9, 11 ] }
 
+[sub_resource type="RectangleShape2D" id=9]
+
+custom_solver_bias = 0.0
+extents = Vector2( 2, 3.5 )
+
 [node name="player" type="Node2D"]
 
 script/script = ExtResource( 1 )
@@ -136,5 +141,23 @@ playback/active = true
 playback/speed = 1.0
 blend_times = [  ]
 autoplay = ""
+
+[node name="area" type="Area2D" parent="."]
+
+input/pickable = true
+shapes/0/shape = SubResource( 9 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0.5 )
+shapes/0/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+
+[node name="col" type="CollisionShape2D" parent="area"]
+
+transform/pos = Vector2( 0, 0.5 )
+shape = SubResource( 9 )
+trigger = false
+_update_shape_index = 0
 
 
