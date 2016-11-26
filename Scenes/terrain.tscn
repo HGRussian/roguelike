@@ -25,14 +25,14 @@ collision/bounce = 0.0
 collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
-tile_data = IntArray( -327703, 0 )
+tile_data = IntArray(  )
 
 [node name="walls" type="TileMap" parent="."]
 
 z/z = -4
 mode = 0
 tile_set = ExtResource( 2 )
-cell/size = Vector2( 8, 4 )
+cell/size = Vector2( 8, 8 )
 cell/quadrant_size = 16
 cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 cell/half_offset = 2
@@ -44,7 +44,7 @@ collision/bounce = 0.0
 collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
-tile_data = IntArray( -131076, 1, -131075, 1, -131074, 1, -131073, 1, -65536, 1, -65535, 1, -65534, 1, -65533, 1, -65532, 1, 131066, 1, 131067, 1, 65541, 1, 65542, 1 )
+tile_data = IntArray(  )
 
 [node name="ground" type="TileMap" parent="."]
 
@@ -63,6 +63,6 @@ collision/bounce = 0.0
 collision/layers = 1
 collision/mask = 1
 occluder/light_mask = 1
-tile_data = IntArray( -4, 2, -3, 2, -2, 2, -1, 2, 65532, 2, 65533, 2, 65534, 2, 65535, 2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 2, 131066, 2, 131067, 2, 131068, 2, 131069, 2, 131070, 2, 131071, 2, 65536, 2, 65537, 2, 65538, 2, 65539, 2, 65540, 2, 65541, 2, 65542, 2, 196602, 2, 196603, 2, 196604, 2, 196605, 2, 196606, 2, 196607, 2, 131072, 2, 131073, 2, 131074, 2, 131075, 2, 131076, 2, 131077, 2, 131078, 2, 262138, 2, 262139, 2, 262140, 2, 262141, 2, 262142, 2, 262143, 2, 196608, 2, 196609, 2, 196610, 2, 196611, 2, 196612, 2, 196613, 2, 196614, 2, 327674, 2, 327675, 2, 327676, 2, 327677, 2, 327678, 2, 327679, 2, 262144, 2, 262145, 2, 262146, 2, 262147, 2, 262148, 2, 262149, 2, 262150, 2, 393212, 2, 393213, 2, 393214, 2, 393215, 2, 327680, 2, 327681, 2, 327682, 2, 327683, 2, 327684, 2, 327685, 2, 458749, 2, 458750, 2, 458751, 2, 393216, 2, 393217, 2, 393218, 2, 393219, 2, 393220, 2 )
+tile_data = IntArray(  )
 
 

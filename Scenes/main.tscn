@@ -89,6 +89,8 @@ autostart = false
 
 [node name="cursor" parent="UI" instance=ExtResource( 30 )]
 
+frame = 8
+
 [connection signal="timeout" from="UI/debug_node/up" to="UI/debug_node" method="_on_up_timeout"]
 
 

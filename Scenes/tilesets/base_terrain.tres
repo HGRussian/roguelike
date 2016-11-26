@@ -4,12 +4,12 @@
 [ext_resource path="res://Art/terrain/wall.png" type="Texture" id=2]
 [ext_resource path="res://Art/terrain/ground.png" type="Texture" id=3]
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
 extents = Vector2( 4, 2 )
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=2]
 
 custom_solver_bias = 0.0
 extents = Vector2( 4, 4 )
@@ -23,10 +23,10 @@ extents = Vector2( 4, 4 )
 0/occluder_offset = Vector2( 4, 4 )
 0/navigation_offset = Vector2( 4, 4 )
 0/shape_offset = Vector2( 4, 6 )
-0/shapes = [ SubResource( 2 ) ]
+0/shapes = [ SubResource( 1 ) ]
 1/name = "wall"
 1/texture = ExtResource( 2 )
-1/tex_offset = Vector2( 0, 0 )
+1/tex_offset = Vector2( 0, 4 )
 1/region = Rect2( 0, 0, 8, 4 )
 1/occluder_offset = Vector2( 4, 2 )
 1/navigation_offset = Vector2( 4, 2 )
@@ -47,5 +47,5 @@ extents = Vector2( 4, 4 )
 3/occluder_offset = Vector2( 4, 4 )
 3/navigation_offset = Vector2( 4, 4 )
 3/shape_offset = Vector2( 4, 4 )
-3/shapes = [ SubResource( 1 ) ]
+3/shapes = [ SubResource( 2 ) ]
 
