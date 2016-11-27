@@ -3,8 +3,7 @@ extends Node2D
 onready var roof = get_node("roof")
 onready var walls = get_node("walls")
 onready var ground = get_node("ground")
-
-
+onready var shadow = get_node("shadow")
 
 func _ready():
 	randomize()
@@ -168,10 +167,25 @@ func set_roof(size):
 					roof.set_cell(x-1,y+1,3)
 				if ground.get_cell(x+1,y+1) == -1:
 					roof.set_cell(x+1,y+1,3)
-			
+	for x in range(x_l,x_r):
+		for y in range(y_t,y_b):
+			if roof.get_cell(x,y) == -1:
+				if (roof.get_cell(x,y+1) != -1 or
+				 roof.get_cell(x,y-1) != -1 or
+				 roof.get_cell(x+1,y) != -1 or
+				 roof.get_cell(x-1,y) != -1 or
+				 roof.get_cell(x-1,y-1) != -1 or
+				 roof.get_cell(x+1,y-1) != -1 or
+				 roof.get_cell(x+1,y+1) != -1 or
+				 roof.get_cell(x-1,y+1) != -1):
+					if ground.get_cell(x,y) == -1:
+						shadow.set_cell(x,y,0)
+					
+					
 			
 
 func clear():
 	roof.clear()
 	walls.clear()
 	ground.clear()
+	shadow.clear()

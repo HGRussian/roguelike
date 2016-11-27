@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=1]
+[gd_scene load_steps=4 format=1]
 
 [ext_resource path="res://Scripts/terrain.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/tilesets/base_terrain.tres" type="TileSet" id=2]
+[ext_resource path="res://Scenes/tilesets/shadow.tres" type="TileSet" id=3]
 
 [node name="terrain" type="Node2D"]
 
@@ -57,6 +58,26 @@ cell/quadrant_size = 16
 cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
 cell/half_offset = 2
 cell/tile_origin = 0
+cell/y_sort = false
+collision/use_kinematic = false
+collision/friction = 1.0
+collision/bounce = 0.0
+collision/layers = 1
+collision/mask = 1
+occluder/light_mask = 1
+tile_data = IntArray(  )
+
+[node name="shadow" type="TileMap" parent="."]
+
+transform/pos = Vector2( 0, -4 )
+z/z = 6
+mode = 0
+tile_set = ExtResource( 3 )
+cell/size = Vector2( 8, 8 )
+cell/quadrant_size = 16
+cell/custom_transform = Matrix32( 1, 0, 0, 1, 0, 0 )
+cell/half_offset = 2
+cell/tile_origin = 1
 cell/y_sort = false
 collision/use_kinematic = false
 collision/friction = 1.0
