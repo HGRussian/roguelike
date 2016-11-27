@@ -4,9 +4,21 @@ onready var roof = get_node("roof")
 onready var walls = get_node("walls")
 onready var ground = get_node("ground")
 
+var imagetexture = ImageTexture.new()
+
 func _ready():
 	randomize()
 	gen(2000,0.7)
+	create_texture()
+
+func create_texture():
+	var image = Image(8,8,false,4)
+	for i in range (0,8):
+		for j in range (0,8):
+			image.put_pixel(i,j,Color(1,1,1,1))
+	imagetexture.create_from_image(image)
+	
+	roof.get_tileset().tile_set_texture(1,imagetexture)
 
 func gen(iter,radius):
 	clear()
