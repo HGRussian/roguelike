@@ -4,21 +4,69 @@ onready var roof = get_node("roof")
 onready var walls = get_node("walls")
 onready var ground = get_node("ground")
 
-var imagetexture = ImageTexture.new()
+
 
 func _ready():
 	randomize()
 	gen(2000,0.7)
-	create_texture()
+	create_texture(0)
 
-func create_texture():
-	var image = Image(8,8,false,4)
-	for i in range (0,8):
-		for j in range (0,8):
-			image.put_pixel(i,j,Color(1,1,1,1))
-	imagetexture.create_from_image(image)
-	
-	roof.get_tileset().tile_set_texture(1,imagetexture)
+func create_texture(type):
+	# ХЗ
+	if type == 0:
+		# Потолок
+		var roof_tex = ImageTexture.new()
+		var roof_color = Color("#8f563b")
+		
+		var image = Image(8,8,false,3)
+		for i in range (0,8):
+			for j in range (0,8):
+				image.put_pixel(i,j,roof_color)
+		
+		roof_tex.create_from_image(image)
+		roof_tex.set_flags(3)
+		roof.get_tileset().tile_set_texture(3,roof_tex)
+		roof.get_tileset().tile_set_region(3, Rect2(0,0,8,8))
+		roof.get_tileset().tile_set_texture(0,roof_tex)
+		roof.get_tileset().tile_set_region(0, Rect2(0,0,8,8))
+		# Пол
+		var ground_tex = ImageTexture.new()
+		var ground_color = Color ("#d9a066")
+		for i in range (0,8):
+			for j in range (0,8):
+				image.put_pixel(i,j, ground_color)
+		
+		ground_tex.create_from_image(image)
+		ground_tex.set_flags(3)
+		roof.get_tileset().tile_set_texture(2,ground_tex)
+		roof.get_tileset().tile_set_region(2, Rect2(0,0,8,8))
+		# Стены
+		var wall_tex = ImageTexture.new()
+		var wall_color = Color ("#696a6a")
+		image = Image(8,8,false,4)
+		var wall_points_color = Color("#847e87")
+		var roof_points = [2,4,5]
+		var ground_points = [2,3,7]
+		for i in range (0,8):
+			for j in range (0,4):
+				if (j == 0 and (roof_points.find(i) != -1)):
+					image.put_pixel(i,j,roof_color)
+				elif (j == 3 and (ground_points.find(i) != -1)):
+					image.put_pixel(i,j,ground_color)
+				elif (randi()%2 == 0):
+					image.put_pixel(i,j, wall_points_color)
+				else:
+					image.put_pixel(i,j,wall_color)
+			for j in range (4,8):
+				if (j<7):
+					image.put_pixel(i,j,Color(0,0,0,0.1))
+				elif (j == 7 and (roof_points.find(i) != -1)):
+					image.put_pixel(i,j,Color(0,0,0,0.1))
+		
+		wall_tex.create_from_image(image)
+		wall_tex.set_flags(3)
+		roof.get_tileset().tile_set_texture(1,wall_tex)
+		roof.get_tileset().tile_set_region(1, Rect2(0,0,8,8))
 
 func gen(iter,radius):
 	clear()

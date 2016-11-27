@@ -29,6 +29,7 @@ tile_data = IntArray(  )
 
 [node name="walls" type="TileMap" parent="."]
 
+transform/pos = Vector2( 0, 4 )
 z/z = -4
 mode = 0
 tile_set = ExtResource( 2 )
