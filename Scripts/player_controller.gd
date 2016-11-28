@@ -10,9 +10,13 @@ var walk = false
 var walk_dir = Vector2(0,0)
 var speed = 60
 
+var go_anim
+
+onready var cursor = get_node("../../UI/cursor")
+
 var health_current = 2
 var health_max = 12
-onready var health_bar = get_tree().get_current_scene().get_node("UI/health_bar")
+onready var health_bar = get_node("../../UI/health_bar")
 
 func _ready():
 	health_bar.health = health_current
@@ -23,7 +27,8 @@ func _ready():
 
 func _process(delta):
 	#Стрельба
-	bullet_spawn.set_pos((get_global_mouse_pos()-get_global_pos()).normalized())
+#	bullet_spawn.set_global_pos( (get_viewport().get_mouse_pos()* (get_tree().get_current_scene().get_viewport_rect().size / OS.get_window_size()) ))
+	bullet_spawn.set_global_pos((cursor.get_global_pos() - Vector2(160,120)).normalized() + get_pos())
 	if (Input.is_action_just_pressed("shoot")):
 		var b = bullet_ins.instance()
 		b.vec = ((bullet_spawn.get_global_pos() - get_global_pos()).normalized()).rotated(randi()%10*0.01 * (randi()%2 - randi()%2))
@@ -49,9 +54,8 @@ func _process(delta):
 	#Анимация
 	if walk_dir != Vector2(0,0):
 		walk = true
-	else:
-		if current_anim.begins_with("walk"):
-			current_anim = ""
+	elif (current_anim.begins_with("walk") or walk == true):
+		current_anim = ""
 		walk = false
 	
 	if (current_anim != new_anim):
@@ -60,16 +64,18 @@ func _process(delta):
 	
 	if (bullet_spawn.get_pos().x < 0):
 		if (bullet_spawn.get_pos().y > -0.5 and bullet_spawn.get_pos().y < 0.5):
-			newanim("left")
+			go_anim = "left"
 	elif (bullet_spawn.get_pos().x > 0):
 		if (bullet_spawn.get_pos().y > -0.5 and bullet_spawn.get_pos().y < 0.5):
-			newanim("right")
+			go_anim = "right"
 	if (bullet_spawn.get_pos().y < 0):
 		if (bullet_spawn.get_pos().x > -0.5 and bullet_spawn.get_pos().x < 0.5):
-			newanim("up")
+			go_anim = "up"
 	elif (bullet_spawn.get_pos().y > 0):
 		if (bullet_spawn.get_pos().x > -0.5 and bullet_spawn.get_pos().x < 0.5):
-			newanim("down")
+			go_anim = "down"
+	
+	newanim(go_anim)
 	
 	#UI. Health bar
 	if health_current > health_max:
@@ -84,5 +90,6 @@ func _process(delta):
 		health_bar.health_max = health_max
 		
 func newanim(dir):
-	if walk:	new_anim = "walk_" + dir
-	else:	new_anim = "idle_" + dir
+	if (dir != null):
+		if walk:	new_anim = "walk_" + dir
+		else:	new_anim = "idle_" + dir
