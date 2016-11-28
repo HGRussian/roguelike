@@ -36,7 +36,7 @@ func _process(delta):
 		get_parent().get_node("player_bullets").add_child(b)
 	
 	#Движение
-	walk_dir = Vector2 (0,0)
+	walk_dir = Vector2(0,0)
 	if (Input.is_action_pressed("ig_up") and tm_roof.get_cellv(tm_roof.world_to_map(get_pos().linear_interpolate( get_pos() + Vector2(0,-1)*speed,delta))) == -1):
 		walk_dir.y = -1
 	elif (Input.is_action_pressed("ig_down") and tm_roof.get_cellv(tm_roof.world_to_map(get_pos().linear_interpolate( get_pos() + Vector2(0,1)*speed,delta))) == -1):

@@ -1,31 +1,20 @@
-[gd_scene load_steps=14 format=1]
+[gd_scene load_steps=4 format=1]
 
-[ext_resource path="res://Art/cursor/cursor1.png" type="Texture" id=1]
-[ext_resource path="res://Art/cursor/cursor2.png" type="Texture" id=2]
-[ext_resource path="res://Art/cursor/cursor3.png" type="Texture" id=3]
-[ext_resource path="res://Art/cursor/cursor4.png" type="Texture" id=4]
-[ext_resource path="res://Art/cursor/cursor5.png" type="Texture" id=5]
-[ext_resource path="res://Art/cursor/cursor6.png" type="Texture" id=6]
-[ext_resource path="res://Art/cursor/cursor7.png" type="Texture" id=7]
-[ext_resource path="res://Art/cursor/cursor8.png" type="Texture" id=8]
-[ext_resource path="res://Art/cursor/cursor9.png" type="Texture" id=9]
-[ext_resource path="res://Art/cursor/cursor10.png" type="Texture" id=10]
-[ext_resource path="res://Art/cursor/cursor11.png" type="Texture" id=11]
+[ext_resource path="res://Art/cursor/c3_1.png" type="Texture" id=1]
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="SpriteFrames" id=3]
 
-animations = [ { "frames":[ ExtResource( 1 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ) ], "loop":true, "name":"default", "speed":5.0 } ]
+animations = [ { "frames":[ ExtResource( 1 ) ], "loop":true, "name":"default", "speed":5.0 } ]
 
 [sub_resource type="GDScript" id=2]
 
 resource/name = "cursor"
-script/source = "extends AnimatedSprite\n\nfunc _ready():\n\tset_process(true)\n#\tInput.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)\n\nfunc _process(delta):\n\tvar pos = (get_viewport().get_mouse_pos() )* (get_tree().get_current_scene().get_viewport_rect().size / OS.get_window_size())\n\tif (pos.x > 320):\n\t\tpos.x = 320\n\telif (pos.x < 0):\n\t\tpos.x = 0\n\tif (pos.y > 240):\n\t\tpos.y = 240\n\telif (pos.y < 0):\n\t\tpos.y = 0\n\tset_pos(pos)\n"
+script/source = "extends AnimatedSprite\n\nfunc _ready():\n\tset_process(true)\n\tInput.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)\n\nfunc _process(delta):\n\tvar pos = get_tree().get_current_scene().get_viewport().get_mouse_pos() - ((get_tree().get_current_scene().get_viewport_rect().size - get_viewport_rect().size)/2)\n\tif (pos.x > 320):\n\t\tpos.x = 320\n\telif (pos.x < 0):\n\t\tpos.x = 0\n\tif (pos.y > 240):\n\t\tpos.y = 240\n\telif (pos.y < 0):\n\t\tpos.y = 0\n\tset_pos(pos )\n"
 
 [node name="cursor" type="AnimatedSprite"]
 
-frames = SubResource( 1 )
+frames = SubResource( 3 )
 animation = "default"
-frame = 4
 playing = true
 script/script = SubResource( 2 )
 
