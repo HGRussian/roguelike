@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=1]
+
+[ext_resource path="res://Other/load_sprite.tres" type="SpriteFrames" id=1]
+
+[node name="load_anim_sprite" type="Control"]
+
+anchor/left = 3
+anchor/top = 3
+anchor/right = 3
+anchor/bottom = 3
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 160.0
+margin/top = 120.0
+margin/right = -160.0
+margin/bottom = -120.0
+
+[node name="actor" type="Control" parent="."]
+
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 290.0
+margin/top = 210.0
+margin/right = 290.0
+margin/bottom = 210.0
+
+[node name="sprite" type="AnimatedSprite" parent="actor"]
+
+transform/rot = 45.0
+transform/scale = Vector2( 1, 1 )
+frames = ExtResource( 1 )
+animation = "default"
+frame = 24
+playing = true
+
+
