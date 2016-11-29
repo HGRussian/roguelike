@@ -51,7 +51,7 @@ render_target/clear_on_new_frame = true
 render_target/filter = false
 render_target/gen_mipmaps = false
 render_target/update_mode = 2
-audio_listener/enable_2d = true
+audio_listener/enable_2d = false
 audio_listener/enable_3d = false
 physics/object_picking = false
 gui/disable_input = false
@@ -84,8 +84,6 @@ stream/buffering_ms = 500
 
 [node name="start" type="Control" parent="UI"]
 
-editor/display_folded = true
-visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = false
@@ -108,7 +106,7 @@ anims/show_long = SubResource( 2 )
 playback/active = true
 playback/speed = 1.0
 blend_times = [  ]
-autoplay = "show"
+autoplay = ""
 
 [node name="Label" type="Label" parent="UI/start"]
 
@@ -163,13 +161,12 @@ centered = false
 
 [node name="buttons" type="Control" parent="UI/menu"]
 
-editor/display_folded = true
 anchor/left = 3
 anchor/top = 3
 anchor/right = 3
 anchor/bottom = 3
 focus/ignore_mouse = false
-focus/stop_mouse = false
+focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 60.0

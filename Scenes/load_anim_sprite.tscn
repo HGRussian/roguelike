@@ -34,7 +34,7 @@ transform/rot = 45.0
 transform/scale = Vector2( 1, 1 )
 frames = ExtResource( 1 )
 animation = "default"
-frame = 24
+frame = 10
 playing = true
 
 

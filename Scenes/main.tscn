@@ -1,9 +1,7 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=3 format=1]
 
 [ext_resource path="res://Art/BG/bg3.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/render_viewport.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/InGame.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Scenes/MainMenu.tscn" type="PackedScene" id=4]
 
 [node name="main" type="Control"]
 
@@ -22,7 +20,7 @@ margin/bottom = 240.0
 
 anchor/right = 1
 anchor/bottom = 1
-focus/ignore_mouse = true
+focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
@@ -39,7 +37,7 @@ anchor/left = 3
 anchor/top = 3
 anchor/right = 3
 anchor/bottom = 3
-focus/ignore_mouse = true
+focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
@@ -49,12 +47,6 @@ margin/right = -320.0
 margin/bottom = -240.0
 stretch_mode = 5
 script/script = ExtResource( 2 )
-
-[node name="InGame" parent="render" instance=ExtResource( 3 )]
-
-own_world = false
-render_target/filter = false
-
-[node name="MainMenu" parent="render" instance=ExtResource( 4 )]
+scene = "InGame"
 
 

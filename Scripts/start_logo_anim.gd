@@ -12,22 +12,32 @@ func next_text():
 	if (current_text <= text.size()-1):
 		label.set_text(text[current_text])
 		return true
-	else:
-		return false
+	else:	return false
 
-func _ready():
-	next_text()
+func _ready():	
+	if Globals.get("custom_params/start_boot_anim") == 1 and get_node("/root/run_args").first_boot == 1:
+		show()
+		next_text()
+		anim_player.play("show")
+	else:
+		get_node("/root/run_args").first_boot = 0
+		get_node("../menu").show()
+		hide()
+	set_process(true)
+
+func _process(delta):
+	if (Input.is_action_just_pressed("shoot")):
+		_on_start_anim_finished()
 
 func _on_start_anim_finished():
 	current_text += 1
 	if (next_text()):
-		if label.get_text().length() < 30:
-			anim_player.play("show")
-		else:
-			anim_player.play("show_long")
+		if label.get_text().length() < 30:	anim_player.play("show")
+		else:	anim_player.play("show_long")
 	else:
 		hide()
 		get_node("../menu").show()
 	
 	if current_text == text.size()-1:
+		set_process(false)
 		get_node("load_anim_sprite").show()

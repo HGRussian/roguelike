@@ -3,7 +3,7 @@ extends Node2D
 var debug_on = false
 var font = preload ("res://Fonts/beefd_5_with_shadow.fnt")
 onready var timer = get_node("up")
-onready var player = get_tree().get_current_scene().get_node("objects/player")
+onready var player = get_node("../../objects/player")
 
 func _ready():
 	set_process(true)

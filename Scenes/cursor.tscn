@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Art/cursor/c3_1.png" type="Texture" id=1]
 
-[sub_resource type="SpriteFrames" id=3]
+[sub_resource type="SpriteFrames" id=1]
 
 animations = [ { "frames":[ ExtResource( 1 ) ], "loop":true, "name":"default", "speed":5.0 } ]
 
@@ -13,7 +13,7 @@ script/source = "extends AnimatedSprite\n\nfunc _ready():\n\tset_process(true)\n
 
 [node name="cursor" type="AnimatedSprite"]
 
-frames = SubResource( 3 )
+frames = SubResource( 1 )
 animation = "default"
 playing = true
 script/script = SubResource( 2 )
