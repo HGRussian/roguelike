@@ -22,6 +22,7 @@ func _ready():
 	else:
 		get_node("/root/run_args").first_boot = 0
 		get_node("../menu").show()
+		get_node("../../ui").show()
 		hide()
 	set_process(true)
 
@@ -37,6 +38,7 @@ func _on_start_anim_finished():
 	else:
 		hide()
 		get_node("../menu").show()
+		get_node("../../ui").show()
 	
 	if current_text == text.size()-1:
 		set_process(false)

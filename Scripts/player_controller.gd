@@ -12,7 +12,7 @@ var speed = 60
 
 var go_anim
 
-onready var cursor = get_node("../../UI/cursor")
+onready var cursor = get_node("../../../cursor")
 
 var health_current = 2
 var health_max = 12
@@ -28,7 +28,7 @@ func _ready():
 func _process(delta):
 	#Стрельба
 #	bullet_spawn.set_global_pos( (get_viewport().get_mouse_pos()* (get_tree().get_current_scene().get_viewport_rect().size / OS.get_window_size()) ))
-	bullet_spawn.set_global_pos((cursor.get_global_pos() - Vector2(160,120)).normalized() + get_pos())
+	bullet_spawn.set_pos((cursor.get_pos() - Vector2(160,120)).normalized())
 	if (Input.is_action_just_pressed("shoot")):
 		var b = bullet_ins.instance()
 		b.vec = ((bullet_spawn.get_global_pos() - get_global_pos()).normalized()).rotated(randi()%10*0.01 * (randi()%2 - randi()%2))

@@ -5,5 +5,10 @@ var scenes = {	"MainMenu":preload("res://Scenes/MainMenu.tscn"),
 export(String, "MainMenu", "InGame") var scene = "MainMenu"
 
 func _ready():
-	add_child(scenes[scene].instance())
-	set_texture(get_node(scene).get_render_target_texture())
+	change(scene)
+
+func change(new_scene):
+	for c in get_children():
+		c.queue_free()
+	add_child(scenes[new_scene].instance())
+	set_texture(get_node(new_scene+"/view").get_render_target_texture())
