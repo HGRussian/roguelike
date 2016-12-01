@@ -20,7 +20,8 @@ func create_texture(type):
 		var image = Image(8,8,false,3)
 		for i in range (0,8):
 			for j in range (0,8):
-				image.put_pixel(i,j,roof_color)
+				var offset = randf()/25
+				image.put_pixel(i,j,Color(roof_color.r-offset,roof_color.g-offset,roof_color.b-offset))
 		
 		roof_tex.create_from_image(image)
 		roof_tex.set_flags(3)
@@ -33,7 +34,8 @@ func create_texture(type):
 		var ground_color = Color ("#d9a066")
 		for i in range (0,8):
 			for j in range (0,8):
-				image.put_pixel(i,j, ground_color)
+				var offset = randf()/25
+				image.put_pixel(i,j,Color(ground_color.r-offset,ground_color.g-offset,ground_color.b-offset))
 		
 		ground_tex.create_from_image(image)
 		ground_tex.set_flags(3)
