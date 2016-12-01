@@ -7,8 +7,12 @@ onready var shadow = get_node("shadow")
 
 func _ready():
 	randomize()
-	gen(2000,0.7)
-	create_texture(0)
+	var gen = Thread.new()
+	var texture_gen = Thread.new()
+	var show_it = Thread.new()
+	gen.start(self,str(gen(2000.0,0.7)))
+	texture_gen.start(self,str(create_texture(0)))
+	
 
 func create_texture(type):
 	# ХЗ
@@ -74,7 +78,7 @@ func gen(iter,radius):
 	var x = 0
 	var y = 0
 	var i = 0
-	while i != iter:
+	while i < iter:
 		var dir = randi()%4
 		if dir == 0:
 			x+=1
@@ -112,7 +116,8 @@ func gen(iter,radius):
 				set_cell(Vector2(x + y_circle, y - x_circle))
 				set_cell(Vector2(x - y_circle, y - x_circle))
 			
-		i+=1
+		i=ground.get_used_cells().size()
+		print("Generating... ",int(i/iter*100),"%")
 	
 	#smoothing
 	for it in range(0,2):
@@ -137,8 +142,10 @@ func gen(iter,radius):
 					cleaner+=1
 				if cleaner <= 3:
 					set_cell(Vector2(x,y))
+			print("Smoothing... Stage: ",it,", ",x)
 	
 	set_roof(Vector2(iter/10,iter/10))
+	print(ground.get_used_cells().size())
 	
 	
 func set_cell(pos):
@@ -184,7 +191,7 @@ func set_roof(size):
 						shadow.set_cell(x,y,0)
 					
 					
-			
+	print("Finishing...")
 
 func clear():
 	roof.clear()
