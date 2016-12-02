@@ -4,14 +4,43 @@ onready var roof = get_node("roof")
 onready var walls = get_node("walls")
 onready var ground = get_node("ground")
 onready var shadow = get_node("shadow")
+var stage = -1
+
+var gen
+var texture_gen 
+onready var ui = get_node("../../../ui")
 
 func _ready():
 	randomize()
-	var gen = Thread.new()
-	var texture_gen = Thread.new()
-	var show_it = Thread.new()
-	gen.start(self,str(gen(2000.0,0.7)))
-	texture_gen.start(self,str(create_texture(0)))
+	gen = Thread.new()
+	set_process(true)
+
+func _process(delta):
+	ui.load_text.set_text("Gen terrain")
+	ui.get_node("load_bar/bg/line").set_size(Vector2(22,6))
+	if (stage == -1):
+		stage = 0
+		yield(get_tree(), "idle_frame")
+		yield(get_tree(), "idle_frame")
+	elif (stage == 0 and not gen.is_active()):
+		str(gen.start(self,str(gen(2000.0,0.7))))
+		gen = null
+		texture_gen = Thread.new()
+		stage += 1
+	elif (stage == 1 and not texture_gen.is_active()):
+		ui.load_text.set_text("gen texture")
+		ui.get_node("load_bar/bg/line").set_size(Vector2(48,6))
+		texture_gen.start(self,str(create_texture(0)))
+		stage += 1
+		texture_gen = null
+		ui.get_node("load_bar/bg/line").set_size(Vector2(58,6))
+		ui.load_text.set_text("done")
+	elif (stage == 2):
+		OS.delay_msec(1000)
+		set_process(false)
+		ui._end_gen()
+		get_tree().set_pause(false)
+		
 	
 
 func create_texture(type):
@@ -117,7 +146,7 @@ func gen(iter,radius):
 				set_cell(Vector2(x - y_circle, y - x_circle))
 			
 		i=ground.get_used_cells().size()
-		print("Generating... ",int(i/iter*100),"%")
+#		print("Generating... ",int(i/iter*100),"%")
 	
 	#smoothing
 	for it in range(0,2):
@@ -142,10 +171,10 @@ func gen(iter,radius):
 					cleaner+=1
 				if cleaner <= 3:
 					set_cell(Vector2(x,y))
-			print("Smoothing... Stage: ",it,", ",x)
+#			print("Smoothing... Stage: ",it,", ",x)
 	
 	set_roof(Vector2(iter/10,iter/10))
-	print(ground.get_used_cells().size())
+#	print(ground.get_used_cells().size())
 	
 	
 func set_cell(pos):
@@ -191,7 +220,7 @@ func set_roof(size):
 						shadow.set_cell(x,y,0)
 					
 					
-	print("Finishing...")
+#	print("Finishing...")
 
 func clear():
 	roof.clear()

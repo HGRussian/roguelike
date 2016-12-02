@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=1]
+[gd_scene load_steps=5 format=1]
+
+[ext_resource path="res://Art/light.png" type="Texture" id=1]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -8,10 +10,16 @@ radius = 2.0
 [sub_resource type="GDScript" id=2]
 
 resource/name = "bullet"
-script/source = "extends Area2D\n\nvar lv = Vector2 (0,0)\nvar speed = 200\nvar vec = Vector2 (1,0)\nonready var roof = get_parent().get_parent().get_node(\"terrain/roof\")\n\nfunc _ready():\n\tset_process(true)\n\nfunc _process(delta):\n\tlv = get_pos() + (vec*speed*delta)\n\tif (roof.get_cellv(roof.world_to_map(lv)) == -1):\n\t\tset_pos(lv)\n\telse:\n\t\tset_pos(lv)\n\t\tqueue_free()\n\nfunc _draw():\n\tdraw_circle(Vector2(0,0),2, Color (\"#fbf236\"))\n\tdraw_circle(Vector2(0,0),1, Color (\"#df7126\"))\n\nfunc _on_time_timeout():\n\tqueue_free()\n"
+script/source = "extends Area2D\n\nvar lv = Vector2 (0,0)\nvar speed = 100\nvar vec = Vector2 (1,0)\nonready var roof = get_parent().get_parent().get_node(\"terrain/roof\")\nvar free = false\n\nfunc _ready():\n\tset_process(true)\n\nfunc _process(delta):\n\tlv = get_pos() + (vec*speed*delta)\n\tif (roof.get_cellv(roof.world_to_map(lv)) == -1):\n\t\tset_pos(lv)\n\telse:\n\t\tset_pos(lv)\n\t\tclear_bullet()\n\nfunc _draw():\n\tif (not free):\n\t\tdraw_circle(Vector2(0,0),3, Color (\"#fbf236\"))\n\t\tdraw_circle(Vector2(0,0),2, Color (\"#df7126\"))\n\nfunc _on_time_timeout():\n\tclear_bullet()\n\n\nfunc clear_bullet():\n\tfree = true\n\tget_node(\"col\").queue_free()\n\tget_node(\"light\").queue_free()\n\tget_node(\"particles\").set_emitting(false)\n\tset_process(false)\n\tupdate()\n\tget_node(\"time_distroy\").start()\n\nfunc _on_time_distroy_timeout():\n\tqueue_free()"
+
+[sub_resource type="ColorRamp" id=3]
+
+offsets = FloatArray( 0, 0.309623 )
+colors = ColorArray( 1, 1, 1, 1, 1, 0.75, 0, 1 )
 
 [node name="bullet" type="Area2D"]
 
+visibility/light_mask = 0
 input/pickable = true
 shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1, 0, 0 )
@@ -31,10 +39,67 @@ _update_shape_index = 0
 [node name="time" type="Timer" parent="."]
 
 process_mode = 1
+wait_time = 1.0
+one_shot = true
+autostart = false
+
+[node name="time_distroy" type="Timer" parent="."]
+
+process_mode = 1
 wait_time = 2.0
 one_shot = true
-autostart = true
+autostart = false
+
+[node name="light" type="Light2D" parent="."]
+
+enabled = true
+editor_only = false
+texture = ExtResource( 1 )
+offset = Vector2( 0, 0 )
+scale = 1.0
+color = Color( 0.882812, 0.45881, 0.25174, 1 )
+energy = 0.5
+mode = 0
+range/height = 0.0
+range/z_min = -1024
+range/z_max = 1024
+range/layer_min = 0
+range/layer_max = 0
+range/item_mask = 1
+shadow/enabled = false
+shadow/color = Color( 0, 0, 0, 0 )
+shadow/buffer_size = 2048
+shadow/esm_multiplier = 80.0
+shadow/item_mask = 1
+
+[node name="particles" type="Particles2D" parent="."]
+
+config/amount = 64
+config/lifetime = 2.0
+config/local_space = false
+params/direction = 0.0
+params/spread = 180.0
+params/linear_velocity = 5.0
+params/spin_velocity = 0.0
+params/orbit_velocity = 0.0
+params/gravity_direction = 0.0
+params/gravity_strength = 0.0
+params/radial_accel = 0.0
+params/tangential_accel = 0.0
+params/damping = 0.0
+params/initial_angle = 0.0
+params/initial_size = 1.0
+params/final_size = 1.0
+params/hue_variation = 0.0
+params/anim_speed_scale = 1.0
+params/anim_initial_pos = 0.0
+randomness/initial_size = 1.0
+randomness/final_size = 1.0
+color/color = Color( 1, 0.699219, 0.125, 1 )
+color/color_ramp = SubResource( 3 )
 
 [connection signal="timeout" from="time" to="." method="_on_time_timeout"]
+
+[connection signal="timeout" from="time_distroy" to="." method="_on_time_distroy_timeout"]
 
 
