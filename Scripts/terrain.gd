@@ -23,7 +23,7 @@ func _process(delta):
 		yield(get_tree(), "idle_frame")
 		yield(get_tree(), "idle_frame")
 	elif (stage == 0 and not gen.is_active()):
-		str(gen.start(self,str(gen(2000.0,0.7))))
+		str(gen.start(self,str(gen(2048.0,0.7))))
 		gen = null
 		texture_gen = Thread.new()
 		stage += 1
@@ -50,28 +50,39 @@ func create_texture(type):
 		var roof_tex = ImageTexture.new()
 		var roof_color = Color("#8f563b")
 		
-		var image = Image(8,8,false,3)
-		for i in range (0,8):
-			for j in range (0,8):
+		var image = Image(10,10,false,4)
+		for i in range (0,10):
+			for j in range (0,10):
+				if randi()%2 == 0:
+					var offset = randf()/25
+					image.put_pixel(i,j,Color(roof_color.r-offset,roof_color.g-offset,roof_color.b-offset))
+				else:
+					var offset = randf()/25
+					image.put_pixel(i,j,Color(roof_color.r-offset,roof_color.g-offset,roof_color.b-offset,0))
+				
+		for i in range (1,9):
+			for j in range (1,9):
 				var offset = randf()/25
 				image.put_pixel(i,j,Color(roof_color.r-offset,roof_color.g-offset,roof_color.b-offset))
 		
 		roof_tex.create_from_image(image)
-		roof_tex.set_flags(3)
+		roof_tex.set_flags(0)
 		roof.get_tileset().tile_set_texture(3,roof_tex)
-		roof.get_tileset().tile_set_region(3, Rect2(0,0,8,8))
+		roof.get_tileset().tile_set_region(3, Rect2(0,0,10,10))
 		roof.get_tileset().tile_set_texture(0,roof_tex)
-		roof.get_tileset().tile_set_region(0, Rect2(0,0,8,8))
+		roof.get_tileset().tile_set_region(0, Rect2(0,0,10,10))
 		# Пол
 		var ground_tex = ImageTexture.new()
 		var ground_color = Color ("#d9a066")
+		
+		var image = Image(8,8,false,3)
 		for i in range (0,8):
 			for j in range (0,8):
-				var offset = randf()/25
+				var offset = randf()/50
 				image.put_pixel(i,j,Color(ground_color.r-offset,ground_color.g-offset,ground_color.b-offset))
 		
 		ground_tex.create_from_image(image)
-		ground_tex.set_flags(3)
+		ground_tex.set_flags(0)
 		roof.get_tileset().tile_set_texture(2,ground_tex)
 		roof.get_tileset().tile_set_region(2, Rect2(0,0,8,8))
 		# Стены
@@ -98,9 +109,24 @@ func create_texture(type):
 					image.put_pixel(i,j,Color(0,0,0,0.1))
 		
 		wall_tex.create_from_image(image)
-		wall_tex.set_flags(3)
+		wall_tex.set_flags(0)
 		roof.get_tileset().tile_set_texture(1,wall_tex)
 		roof.get_tileset().tile_set_region(1, Rect2(0,0,8,8))
+		
+		for i in range(0,8):
+			var shadow_tex = ImageTexture.new()
+			image = Image(16,16,false,4)
+			for j in range(0,16):
+				for k in range(0,16):
+					var saturation = 16-abs(j-8)-abs(k-8)
+					if randi()%16 < saturation:
+						image.put_pixel(j,k,Color(0,0,0))
+					else:
+						image.put_pixel(j,k,Color(0,0,0,0))
+			shadow_tex.create_from_image(image)
+			shadow_tex.set_flags(0)
+			shadow.get_tileset().tile_set_texture(i,shadow_tex)
+			shadow.get_tileset().tile_set_region(i,Rect2(0,0,16,16))
 
 func gen(iter,radius):
 	clear()
@@ -173,18 +199,20 @@ func gen(iter,radius):
 					set_cell(Vector2(x,y))
 #			print("Smoothing... Stage: ",it,", ",x)
 	
-	set_roof(Vector2(iter/10,iter/10))
+	var cells = ground.get_used_cells()
+	var y_t = cells[0].y-5
+	var y_b = cells[cells.size()-1].y+5
+	cells.sort()
+	var x_l = cells[0].x-5
+	var x_r = cells[cells.size()-1].x+5
+	set_roof(x_l,x_r,y_t,y_b)
 #	print(ground.get_used_cells().size())
 	
 	
 func set_cell(pos):
 	ground.set_cell(pos.x,pos.y,2)
 
-func set_roof(size):
-	var x_l = size.x/2-size.x
-	var x_r = size.x/2
-	var y_t = size.y/2-size.y
-	var y_b = size.y/2
+func set_roof(x_l,x_r,y_t,y_b):
 	for x in range(x_l,x_r):
 		for y in range(y_t,y_b):
 			if ground.get_cell(x,y) == 2:
@@ -217,7 +245,7 @@ func set_roof(size):
 				 roof.get_cell(x+1,y+1) != -1 or
 				 roof.get_cell(x-1,y+1) != -1):
 					if ground.get_cell(x,y) == -1:
-						shadow.set_cell(x,y,0)
+						shadow.set_cell(x,y,randi()%8)
 					
 					
 #	print("Finishing...")
