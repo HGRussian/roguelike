@@ -16,7 +16,7 @@
 [sub_resource type="GDScript" id=1]
 
 resource/name = "ingame_ui"
-script/source = "extends Control\n\nonready var load_bg = get_node(\"load_bar/bg/line\")\nonready var load_text = get_node(\"load_bar/text\")\n\nfunc _ready():\n\tget_tree().set_pause(true)\n\nfunc _end_gen():\n\tget_node(\"load_bar\").hide()\n\tget_node(\"black_screen/anim\").play(\"hide\")\n\n"
+script/source = "extends Control\n\nonready var load_bg = get_node(\"load_bar/bg/line\")\nonready var load_text = get_node(\"load_bar/text\")\n\nfunc _ready():\n\tget_tree().set_pause(true)\n\nfunc _end_gen():\n\tget_node(\"load_bar\").hide()\n\tget_node(\"black_screen/anim\").play(\"hide\")\n\tget_tree().set_pause(false)\n\n"
 
 [sub_resource type="Animation" id=2]
 

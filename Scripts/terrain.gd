@@ -4,42 +4,30 @@ onready var roof = get_node("roof")
 onready var walls = get_node("walls")
 onready var ground = get_node("ground")
 onready var shadow = get_node("shadow")
-var stage = -1
 
-var gen
-var texture_gen 
 onready var ui = get_node("../../../ui")
+
+var stage = 0
+var i = 0
+var x = 0
+var y = 0
+
+var size = 2000.0
 
 func _ready():
 	randomize()
-	gen = Thread.new()
 	set_process(true)
 
 func _process(delta):
-	ui.load_text.set_text("Gen terrain")
-	ui.get_node("load_bar/bg/line").set_size(Vector2(22,6))
-	if (stage == -1):
-		stage = 0
-		yield(get_tree(), "idle_frame")
-		yield(get_tree(), "idle_frame")
-	elif (stage == 0 and not gen.is_active()):
-		str(gen.start(self,str(gen(2048.0,0.7))))
-		gen = null
-		texture_gen = Thread.new()
-		stage += 1
-	elif (stage == 1 and not texture_gen.is_active()):
-		ui.load_text.set_text("gen texture")
-		ui.get_node("load_bar/bg/line").set_size(Vector2(48,6))
-		texture_gen.start(self,str(create_texture(0)))
-		stage += 1
-		texture_gen = null
-		ui.get_node("load_bar/bg/line").set_size(Vector2(58,6))
-		ui.load_text.set_text("done")
-	elif (stage == 2):
-		OS.delay_msec(1000)
-		set_process(false)
+	if stage < 2:
+		gen(size,0.7)
+		ui.load_bg.set_size(Vector2((i/size*100)/1.73,6))
+		ui.load_text.set_text("Generating...")
+	elif stage == 2:
+		create_texture(0)
+	elif stage == 3:
 		ui._end_gen()
-		get_tree().set_pause(false)
+		stage+=1
 		
 	
 
@@ -127,86 +115,89 @@ func create_texture(type):
 			shadow_tex.set_flags(0)
 			shadow.get_tileset().tile_set_texture(i,shadow_tex)
 			shadow.get_tileset().tile_set_region(i,Rect2(0,0,16,16))
+	stage+=1
 
 func gen(iter,radius):
-	clear()
-	var x = 0
-	var y = 0
-	var i = 0
-	while i < iter:
-		var dir = randi()%4
-		if dir == 0:
-			x+=1
-		elif dir == 1:
-			x-=1
-		elif dir == 2:
-			y+=1
-		elif dir == 3:
-			y-=1
-		
-		#circle_draw_build-in_func
-		var f = 1 - radius
-		var ddf_x = 1
-		var ddf_y = -2 * radius
-		var x_circle = 0
-		var y_circle = radius
-		set_cell(Vector2(x, y + radius))
-		set_cell(Vector2(x, y - radius))
-		set_cell(Vector2(x + radius, y))
-		set_cell(Vector2(x - radius, y))
-		while x_circle < y_circle:
-			if f >= 0: 
-				y_circle -= 1
-				ddf_y += 2
-				f += ddf_y
-				x_circle += 1
-				ddf_x += 2
-				f += ddf_x    
-				set_cell(Vector2(x + x_circle, y + y_circle))
-				set_cell(Vector2(x - x_circle, y + y_circle))
-				set_cell(Vector2(x + x_circle, y - y_circle))
-				set_cell(Vector2(x - x_circle, y - y_circle))
-				set_cell(Vector2(x + y_circle, y + x_circle))
-				set_cell(Vector2(x - y_circle, y + x_circle))
-				set_cell(Vector2(x + y_circle, y - x_circle))
-				set_cell(Vector2(x - y_circle, y - x_circle))
-			
-		i=ground.get_used_cells().size()
-#		print("Generating... ",int(i/iter*100),"%")
-	
-	#smoothing
-	for it in range(0,2):
-		for x in range(-iter/20,iter/20):
-			for y in range(-iter/20,iter/20):
-				var cleaner = 0
-				if ground.get_cell(x+1,y) == -1:
-					cleaner+=1
-				if ground.get_cell(x+1,y+1) == -1:
-					cleaner+=1
-				if ground.get_cell(x,y+1) == -1:
-					cleaner+=1
-				if ground.get_cell(x-1,y+1) == -1:
-					cleaner+=1
-				if ground.get_cell(x-1,y) == -1:
-					cleaner+=1
-				if ground.get_cell(x-1,y-1) == -1:
-					cleaner+=1
-				if ground.get_cell(x,y-1) == -1:
-					cleaner+=1
-				if ground.get_cell(x+1,y-1) == -1:
-					cleaner+=1
-				if cleaner <= 3:
-					set_cell(Vector2(x,y))
-#			print("Smoothing... Stage: ",it,", ",x)
-	
-	var cells = ground.get_used_cells()
-	var y_t = cells[0].y-5
-	var y_b = cells[cells.size()-1].y+5
-	cells.sort()
-	var x_l = cells[0].x-5
-	var x_r = cells[cells.size()-1].x+5
-	set_roof(x_l,x_r,y_t,y_b)
-#	print(ground.get_used_cells().size())
+	if i == 0:
+		clear()
+		stage = 0
+		x = 0
+		y = 0
+	if i < iter:
+		for q in range(0,32):
+			var dir = randi()%4
+			if dir == 0:
+				x+=1
+			if dir == 1:
+				x-=1
+			if dir == 2:
+				y+=1
+			if dir == 3:
+				y-=1
+			#circle_draw_build-in_func
+			var f = 1 - radius
+			var ddf_x = 1
+			var ddf_y = -2 * radius
+			var x_circle = 0
+			var y_circle = radius
+			set_cell(Vector2(x, y + radius))
+			set_cell(Vector2(x, y - radius))
+			set_cell(Vector2(x + radius, y))
+			set_cell(Vector2(x - radius, y))
+			while x_circle < y_circle:
+				if f >= 0: 
+					y_circle -= 1
+					ddf_y += 2
+					f += ddf_y
+					x_circle += 1
+					ddf_x += 2
+					f += ddf_x    
+					set_cell(Vector2(x + x_circle, y + y_circle))
+					set_cell(Vector2(x - x_circle, y + y_circle))
+					set_cell(Vector2(x + x_circle, y - y_circle))
+					set_cell(Vector2(x - x_circle, y - y_circle))
+					set_cell(Vector2(x + y_circle, y + x_circle))
+					set_cell(Vector2(x - y_circle, y + x_circle))
+					set_cell(Vector2(x + y_circle, y - x_circle))
+					set_cell(Vector2(x - y_circle, y - x_circle))
+				
+			i=ground.get_used_cells().size()
+	elif stage == 0:
+		#smoothing
+		for it in range(0,2):
+			for x in range(-iter/20,iter/20):
+				for y in range(-iter/20,iter/20):
+					var cleaner = 0
+					if ground.get_cell(x+1,y) == -1:
+						cleaner+=1
+					if ground.get_cell(x+1,y+1) == -1:
+						cleaner+=1
+					if ground.get_cell(x,y+1) == -1:
+						cleaner+=1
+					if ground.get_cell(x-1,y+1) == -1:
+						cleaner+=1
+					if ground.get_cell(x-1,y) == -1:
+						cleaner+=1
+					if ground.get_cell(x-1,y-1) == -1:
+						cleaner+=1
+					if ground.get_cell(x,y-1) == -1:
+						cleaner+=1
+					if ground.get_cell(x+1,y-1) == -1:
+						cleaner+=1
+					if cleaner <= 3:
+						set_cell(Vector2(x,y))
+		print("Smoothed...")
+		stage+=1
+	if stage == 1:
+		var cells = ground.get_used_cells()
+		var y_t = cells[0].y-5
+		var y_b = cells[cells.size()-1].y+5
+		cells.sort()
+		var x_l = cells[0].x-5
+		var x_r = cells[cells.size()-1].x+5
+		set_roof(x_l,x_r,y_t,y_b)
+		stage+=1
+		print("ready!")
 	
 	
 func set_cell(pos):
@@ -247,8 +238,6 @@ func set_roof(x_l,x_r,y_t,y_b):
 					if ground.get_cell(x,y) == -1:
 						shadow.set_cell(x,y,randi()%8)
 					
-					
-#	print("Finishing...")
 
 func clear():
 	roof.clear()
