@@ -25,7 +25,6 @@ func _process(delta):
 		ui.load_text.set_text("Generating...")
 	elif stage == 2:
 		create_texture(0)
-	elif stage == 3:
 		ui._end_gen()
 		stage+=1
 		
@@ -41,7 +40,11 @@ func create_texture(type):
 		var image = Image(10,10,false,4)
 		for i in range (0,10):
 			for j in range (0,10):
-				if randi()%2 == 0:
+				var chance  = 0.0
+				for q in range(0,12):
+					chance+=(randi()%1001)*0.001
+				chance-=6
+				if chance > 0:
 					var offset = randf()/25
 					image.put_pixel(i,j,Color(roof_color.r-offset,roof_color.g-offset,roof_color.b-offset))
 				else:
@@ -115,7 +118,6 @@ func create_texture(type):
 			shadow_tex.set_flags(0)
 			shadow.get_tileset().tile_set_texture(i,shadow_tex)
 			shadow.get_tileset().tile_set_region(i,Rect2(0,0,16,16))
-	stage+=1
 
 func gen(iter,radius):
 	if i == 0:
