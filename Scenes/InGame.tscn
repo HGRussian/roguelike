@@ -7,8 +7,8 @@
 [ext_resource path="res://Scenes/characters/t8pp.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scripts/UI/health_bar.gd" type="Script" id=6]
 [ext_resource path="res://Scripts/debug_mode.gd" type="Script" id=7]
-[ext_resource path="res://Art/weapons/sword_wood_prev1.png" type="Texture" id=8]
-[ext_resource path="res://Art/weapons/staff_fire_prev2.png" type="Texture" id=9]
+[ext_resource path="res://Art/weapons/staff_fire_prev4.png" type="Texture" id=8]
+[ext_resource path="res://Art/weapons/sword_wood_prev3.png" type="Texture" id=9]
 [ext_resource path="res://Art/white_point.png" type="Texture" id=10]
 [ext_resource path="res://Art/UI/health_bar/hb_bg.png" type="Texture" id=11]
 [ext_resource path="res://Fonts/beefd_5_with_shadow.fnt" type="BitmapFont" id=12]
@@ -112,9 +112,9 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 4.0
+margin/left = 8.0
 margin/top = 24.0
-margin/right = 12.0
+margin/right = 16.0
 margin/bottom = 32.0
 texture = ExtResource( 8 )
 stretch_mode = 0
@@ -125,9 +125,9 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 14.0
+margin/left = 40.0
 margin/top = 24.0
-margin/right = 22.0
+margin/right = 48.0
 margin/bottom = 32.0
 texture = ExtResource( 9 )
 stretch_mode = 0

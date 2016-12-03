@@ -1,7 +1,6 @@
 extends TextureFrame
 var scenes = {	"MainMenu":preload("res://Scenes/MainMenu.tscn"),
-				"InGame":preload("res://Scenes/InGame.tscn")
-				}
+				"InGame":preload("res://Scenes/InGame.tscn")}
 export(String, "MainMenu", "InGame") var scene = "MainMenu"
 
 func _ready():

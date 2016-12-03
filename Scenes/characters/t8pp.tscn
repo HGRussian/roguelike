@@ -131,6 +131,7 @@ modulate = Color( 1, 1, 1, 0.251373 )
 texture = ExtResource( 4 )
 vframes = 4
 hframes = 4
+frame = 3
 
 [node name="anim" type="AnimationPlayer" parent="."]
 

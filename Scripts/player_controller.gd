@@ -2,21 +2,23 @@ extends Node2D
 
 onready var tm_roof = get_parent().get_node("terrain/roof")
 onready var bullet_spawn = get_node("bullet_spawn")
-var bullet_ins = preload ("res://Scenes/bullet.tscn")
 onready var anim = get_node("anim")
+onready var cursor = get_node("../../../cursor")
+onready var health_bar = get_node("../../UI/health_bar")
+
+var bullet_ins = preload ("res://Scenes/bullet.tscn")
+
 var current_anim = "idle_down"
 var new_anim = "idle_down"
 var walk = false
+var go_anim
+
 var walk_dir = Vector2(0,0)
 var speed = 60
 
-var go_anim
-
-onready var cursor = get_node("../../../cursor")
-
-var health_current = 2
+var health_current = 7
 var health_max = 12
-onready var health_bar = get_node("../../UI/health_bar")
+
 
 func _ready():
 	health_bar.health = health_current
@@ -27,7 +29,6 @@ func _ready():
 
 func _process(delta):
 	#Стрельба
-#	bullet_spawn.set_global_pos( (get_viewport().get_mouse_pos()* (get_tree().get_current_scene().get_viewport_rect().size / OS.get_window_size()) ))
 	bullet_spawn.set_pos((cursor.get_pos() - Vector2(160,120)).normalized())
 	if (Input.is_action_just_pressed("shoot")):
 		var b = bullet_ins.instance()

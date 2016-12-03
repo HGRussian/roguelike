@@ -14,13 +14,13 @@ script/source = "extends Area2D\n\nvar lv = Vector2 (0,0)\nvar speed = 100\nvar 
 
 [sub_resource type="ColorRamp" id=3]
 
-offsets = FloatArray( 0, 0.309623, 0.701149, 1 )
-colors = ColorArray( 1, 1, 1, 1, 1, 0.75, 0, 1, 1, 0.74902, 0, 1, 1, 0.966214, 0.865385, 0 )
+offsets = FloatArray( 0, 0.309623, 0.701149 )
+colors = ColorArray( 1, 1, 1, 1, 1, 0.75, 0, 1, 0.90625, 0.78364, 0.417725, 1 )
 
 [sub_resource type="ColorRamp" id=4]
 
-offsets = FloatArray( 0, 1 )
-colors = ColorArray( 1, 0.764648, 0.0585938, 1, 1, 1, 1, 0 )
+offsets = FloatArray( 0.117155, 0.539749, 0.866109 )
+colors = ColorArray( 0.964844, 0.298451, 0.0376892, 1, 1, 0.46875, 0, 1, 0.929688, 0.908465, 0.682739, 1 )
 
 [node name="bullet" type="Area2D"]
 
@@ -107,13 +107,15 @@ color/color_ramp = SubResource( 3 )
 [node name="expl" type="Particles2D" parent="."]
 
 z/z = -2
-config/amount = 256
-config/lifetime = 0.5
-config/emit_timeout = 0.1
+config/amount = 64
+config/lifetime = 1.0
+config/time_scale = 2.0
+config/emit_timeout = 0.5
 config/emitting = false
+config/half_extents = Vector2( 2, 2 )
 params/direction = 0.0
 params/spread = 180.0
-params/linear_velocity = 50.0
+params/linear_velocity = 25.0
 params/spin_velocity = 0.0
 params/orbit_velocity = 0.0
 params/gravity_direction = 0.0
@@ -122,11 +124,16 @@ params/radial_accel = 0.0
 params/tangential_accel = 0.0
 params/damping = 75.0
 params/initial_angle = 0.0
-params/initial_size = 2.0
-params/final_size = 0.0
+params/initial_size = 1.5
+params/final_size = 1.5
 params/hue_variation = 0.0
 params/anim_speed_scale = 1.0
 params/anim_initial_pos = 0.0
+randomness/spread = 1.0
+randomness/linear_velocity = 1.0
+randomness/radial_accel = 1.0
+randomness/initial_size = 1.0
+randomness/final_size = 1.0
 color/color = Color( 1, 0, 0, 1 )
 color/color_ramp = SubResource( 4 )
 

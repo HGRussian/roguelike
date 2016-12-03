@@ -18,7 +18,6 @@ func _process(delta):
 			timer.start()
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 			debug_on = true
-		print ("Debug is "+str(debug_on))
 		update()
 	if Input.is_action_just_pressed("debug_heath-"):
 		player.health_current -= 1
