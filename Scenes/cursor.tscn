@@ -9,7 +9,7 @@ animations = [ { "frames":[ ExtResource( 1 ) ], "loop":true, "name":"default", "
 [sub_resource type="GDScript" id=2]
 
 resource/name = "cursor"
-script/source = "extends AnimatedSprite\n\nfunc _ready():\n\tset_process(true)\n\tInput.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)\n\nfunc _process(delta):\n\tvar pos = get_tree().get_current_scene().get_viewport().get_mouse_pos() - ((get_tree().get_current_scene().get_viewport_rect().size - get_node(\"../view\").get_rect().size)/2)\n\tif (pos.x > 320):\tpos.x = 320\n\telif (pos.x < 0):\tpos.x = 0\n\tif (pos.y > 240):\tpos.y = 240\n\telif (pos.y < 0):\tpos.y = 0\n\tset_pos(pos)\n"
+script/source = "extends AnimatedSprite\n\nfunc _ready():\n\tset_process(true)\n\tInput.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)\n\nfunc _process(delta):\n\tvar pos = get_global_mouse_pos()\n\n\tset_pos(pos)\n"
 
 [node name="cursor" type="AnimatedSprite"]
 

@@ -3,7 +3,7 @@
 [sub_resource type="GDScript" id=1]
 
 resource/name = "camera"
-script/source = "extends Camera2D\n\nvar in_game = false\nvar player\nvar cursor\n\nfunc _ready():\n\tset_process(true)\n\tif (has_node(\"../../../cursor\")):\n\t\tcursor = get_node(\"../../../cursor\")\n\tif (get_parent().has_node(\"player\")):\n\t\tplayer = get_parent().get_node(\"player\")\n\nfunc _process(delta):\n\tif (cursor != null and player != null):\n\t\tset_pos(player.get_pos() + cursor.get_pos()/4 - get_viewport_rect().size/8 )"
+script/source = "extends Camera2D\n\nvar in_game = false\nvar player\nvar cursor\n\nfunc _ready():\n\tset_process(true)\n\tif (has_node(\"../../cursor\")):\n\t\tcursor = get_node(\"../../cursor\")\n\tif (get_parent().has_node(\"player\")):\n\t\tplayer = get_parent().get_node(\"player\")\n\nfunc _process(delta):\n\tif (cursor != null and player != null):\n\t\tset_pos(player.get_pos()+ (cursor.get_pos() - player.get_pos())/4)"
 
 [node name="camera" type="Camera2D"]
 

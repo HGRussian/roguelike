@@ -7,9 +7,9 @@ func _on_quit_pressed():
 	get_tree().quit()
 
 func _on_options_pressed():
-	get_node("ui/main").hide()
-	get_node("ui/options").show()
+	get_node("menu/main").hide()
+	get_node("menu/options").show()
 
 func _on_go_menu_pressed(s):
-	get_node("ui/main").show()
-	get_node("ui/"+s).hide()
+	get_node("menu/main").show()
+	get_node("menu/"+s).hide()

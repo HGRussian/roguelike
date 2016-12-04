@@ -1,22 +1,26 @@
-[gd_scene load_steps=15 format=1]
+[gd_scene load_steps=19 format=1]
 
-[ext_resource path="res://Scenes/cursor.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Scripts/objects.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/terrain.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Scenes/camera.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scenes/characters/t8pp.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scripts/objects.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/terrain.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/camera.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/characters/t8pp.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Art/UI/health_bar/bg.png" type="Texture" id=5]
 [ext_resource path="res://Scripts/UI/health_bar.gd" type="Script" id=6]
-[ext_resource path="res://Scripts/debug_mode.gd" type="Script" id=7]
-[ext_resource path="res://Art/weapons/staff_fire_prev4.png" type="Texture" id=8]
-[ext_resource path="res://Art/weapons/sword_wood_prev3.png" type="Texture" id=9]
-[ext_resource path="res://Art/white_point.png" type="Texture" id=10]
-[ext_resource path="res://Art/UI/health_bar/hb_bg.png" type="Texture" id=11]
-[ext_resource path="res://Fonts/beefd_5_with_shadow.fnt" type="BitmapFont" id=12]
+[ext_resource path="res://Art/UI/health_bar/h_line.png" type="Texture" id=7]
+[ext_resource path="res://Art/UI/health_bar/l_line.png" type="Texture" id=8]
+[ext_resource path="res://Art/UI/health_bar/m_line.png" type="Texture" id=9]
+[ext_resource path="res://Scripts/debug_mode.gd" type="Script" id=10]
+[ext_resource path="res://Art/weapons/staff_fire_prev4.png" type="Texture" id=11]
+[ext_resource path="res://Art/weapons/sword_wood_prev3.png" type="Texture" id=12]
+[ext_resource path="res://Art/white_point.png" type="Texture" id=13]
+[ext_resource path="res://Art/UI/health_bar/hb_bg.png" type="Texture" id=14]
+[ext_resource path="res://Fonts/beefd_5_with_shadow.fnt" type="BitmapFont" id=15]
+[ext_resource path="res://Scenes/cursor.tscn" type="PackedScene" id=16]
 
 [sub_resource type="GDScript" id=1]
 
 resource/name = "ingame_ui"
-script/source = "extends Control\n\nonready var load_bg = get_node(\"load_bar/bg/line\")\nonready var load_text = get_node(\"load_bar/text\")\n\nfunc _ready():\n\tget_tree().set_pause(true)\n\nfunc _end_gen():\n\tget_node(\"load_bar\").hide()\n\tget_node(\"black_screen/anim\").play(\"hide\")\n\tget_tree().set_pause(false)\n\n"
+script/source = "extends CanvasLayer\n\nonready var load_bg = get_node(\"load_bar/bg/line\")\nonready var load_text = get_node(\"load_bar/text\")\n\nfunc _ready():\n\tget_tree().set_pause(true)\n\nfunc _end_gen():\n\tget_node(\"load_bar\").hide()\n\tget_node(\"black_screen/anim\").play(\"hide\")\n\tget_tree().set_pause(false)\n\n"
 
 [sub_resource type="Animation" id=2]
 
@@ -32,121 +36,142 @@ tracks/0/keys = { "times":FloatArray( 0.5, 2 ), "transitions":FloatArray( 1, 1 )
 
 [node name="InGame" type="Control"]
 
+anchor/right = 1
+anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
-margin/right = 320.0
-margin/bottom = 240.0
+margin/right = 0.0
+margin/bottom = 0.0
 
-[node name="cursor" parent="." instance=ExtResource( 1 )]
+[node name="objects" type="Node2D" parent="."]
 
-[node name="view" type="Viewport" parent="."]
+script/script = ExtResource( 1 )
 
-rect = Rect2( 0, 0, 320, 240 )
-own_world = false
-world = null
-transparent_bg = false
-render_target/enabled = true
-render_target/v_flip = false
-render_target/clear_on_new_frame = true
-render_target/filter = false
-render_target/gen_mipmaps = false
-render_target/update_mode = 2
-audio_listener/enable_2d = true
-audio_listener/enable_3d = false
-physics/object_picking = false
-gui/disable_input = false
-
-[node name="objects" type="Node2D" parent="view"]
-
-script/script = ExtResource( 2 )
-
-[node name="terrain" parent="view/objects" instance=ExtResource( 3 )]
+[node name="terrain" parent="objects" instance=ExtResource( 2 )]
 
 process/pause_mode = 2
 
-[node name="player_bullets" type="Node2D" parent="view/objects"]
+[node name="player_bullets" type="Node2D" parent="objects"]
 
-[node name="camera" parent="view/objects" instance=ExtResource( 4 )]
+[node name="camera" parent="objects" instance=ExtResource( 3 )]
 
+zoom = Vector2( 0.5, 0.5 )
 smoothing/speed = 10.0
 
-[node name="player" parent="view/objects" instance=ExtResource( 5 )]
+[node name="player" parent="objects" instance=ExtResource( 4 )]
 
-[node name="UI" type="CanvasLayer" parent="view"]
+[node name="ui" type="CanvasLayer" parent="."]
 
+process/pause_mode = 2
 layer = 1
 offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
+script/script = SubResource( 1 )
 
-[node name="health_bar" type="Control" parent="view/UI"]
-
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 0.0
-margin/right = 40.0
-margin/bottom = 40.0
-script/script = ExtResource( 6 )
-
-[node name="debug_node" type="Node2D" parent="view/UI"]
-
-script/script = ExtResource( 7 )
-
-[node name="up" type="Timer" parent="view/UI/debug_node"]
-
-process_mode = 1
-wait_time = 0.5
-one_shot = false
-autostart = false
-
-[node name="f_weapon" type="TextureFrame" parent="view/UI"]
+[node name="health_bar" type="TextureFrame" parent="ui"]
 
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 8.0
-margin/top = 24.0
-margin/right = 16.0
-margin/bottom = 32.0
-texture = ExtResource( 8 )
+margin/top = 8.0
+margin/right = 136.0
+margin/bottom = 40.0
+texture = ExtResource( 5 )
+stretch_mode = 0
+script/script = ExtResource( 6 )
+
+[node name="h" type="TextureFrame" parent="ui/health_bar"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 12.0
+margin/top = 4.0
+margin/right = 124.0
+margin/bottom = 8.0
+texture = ExtResource( 7 )
+expand = true
 stretch_mode = 0
 
-[node name="s_weapon" type="TextureFrame" parent="view/UI"]
+[node name="l" type="TextureFrame" parent="ui/health_bar"]
 
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 8.0
+margin/top = 12.0
+margin/right = 120.0
+margin/bottom = 16.0
+texture = ExtResource( 8 )
+expand = true
+stretch_mode = 0
+
+[node name="m" type="TextureFrame" parent="ui/health_bar"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 4.0
+margin/top = 20.0
+margin/right = 116.0
+margin/bottom = 24.0
+texture = ExtResource( 9 )
+expand = true
+stretch_mode = 0
+
+[node name="debug_node" type="Node2D" parent="ui"]
+
+script/script = ExtResource( 10 )
+
+[node name="up" type="Timer" parent="ui/debug_node"]
+
+process_mode = 1
+wait_time = 0.5
+one_shot = false
+autostart = false
+
+[node name="f_weapon" type="TextureFrame" parent="ui"]
+
+visibility/visible = false
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 8.0
+margin/top = 24.0
+margin/right = 32.0
+margin/bottom = 32.0
+texture = ExtResource( 11 )
+stretch_mode = 0
+
+[node name="s_weapon" type="TextureFrame" parent="ui"]
+
+visibility/visible = false
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 40.0
 margin/top = 24.0
-margin/right = 48.0
+margin/right = 64.0
 margin/bottom = 32.0
-texture = ExtResource( 9 )
+texture = ExtResource( 12 )
 stretch_mode = 0
-
-[node name="ui" type="Control" parent="."]
-
-process/pause_mode = 2
-focus/ignore_mouse = false
-focus/stop_mouse = true
-size_flags/horizontal = 2
-size_flags/vertical = 2
-margin/left = 0.0
-margin/top = 0.0
-margin/right = 40.0
-margin/bottom = 40.0
-script/script = SubResource( 1 )
 
 [node name="black_screen" type="TextureFrame" parent="ui"]
 
+editor/display_folded = true
+visibility/visible = false
 anchor/right = 1
 anchor/bottom = 1
 focus/ignore_mouse = true
@@ -155,9 +180,9 @@ size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
-margin/right = -280.0
-margin/bottom = -200.0
-texture = ExtResource( 10 )
+margin/right = 0.0
+margin/bottom = 0.0
+texture = ExtResource( 13 )
 modulate = Color( 0, 0, 0, 1 )
 expand = true
 stretch_mode = 0
@@ -175,14 +200,17 @@ autoplay = ""
 
 [node name="load_bar" type="Control" parent="ui"]
 
+editor/display_folded = true
+anchor/right = 1
+anchor/bottom = 1
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 0.0
 margin/top = 0.0
-margin/right = 320.0
-margin/bottom = 240.0
+margin/right = 0.0
+margin/bottom = 0.0
 
 [node name="bg" type="TextureFrame" parent="ui/load_bar"]
 
@@ -198,7 +226,7 @@ margin/left = 32.0
 margin/top = 6.0
 margin/right = -32.0
 margin/bottom = -6.0
-texture = ExtResource( 11 )
+texture = ExtResource( 14 )
 stretch_mode = 0
 
 [node name="line" type="TextureFrame" parent="ui/load_bar/bg"]
@@ -211,25 +239,26 @@ margin/left = 3.0
 margin/top = 3.0
 margin/right = 3.0
 margin/bottom = 9.0
-texture = ExtResource( 10 )
+texture = ExtResource( 13 )
 modulate = Color( 0.67451, 0.196078, 0.196078, 1 )
 expand = true
 stretch_mode = 0
 
 [node name="text" type="Label" parent="ui/load_bar"]
 
+anchor/left = 3
 anchor/top = 3
-anchor/right = 1
+anchor/right = 3
 anchor/bottom = 3
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 20.0
+margin/left = 140.0
 margin/top = 25.0
-margin/right = 20.0
+margin/right = -140.0
 margin/bottom = 7.0
-custom_fonts/font = ExtResource( 12 )
+custom_fonts/font = ExtResource( 15 )
 text = "loading..."
 align = 1
 valign = 2
@@ -239,6 +268,8 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[connection signal="timeout" from="view/UI/debug_node/up" to="view/UI/debug_node" method="_on_up_timeout"]
+[node name="cursor" parent="." instance=ExtResource( 16 )]
+
+[connection signal="timeout" from="ui/debug_node/up" to="ui/debug_node" method="_on_up_timeout"]
 
 

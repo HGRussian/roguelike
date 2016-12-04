@@ -5,7 +5,7 @@ onready var walls = get_node("walls")
 onready var ground = get_node("ground")
 onready var shadow = get_node("shadow")
 
-onready var ui = get_node("../../../ui")
+onready var ui = get_node("../../ui")
 
 var stage = 0
 var i = 0
