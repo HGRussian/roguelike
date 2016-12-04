@@ -1,5 +1,7 @@
 extends Node2D
 
+var level = [8,16,24,32,48,56,64,72,98,96,104,116,128]
+
 onready var tm_roof = get_parent().get_node("terrain/roof")
 onready var bullet_spawn = get_node("bullet_spawn")
 onready var anim = get_node("anim")
@@ -19,7 +21,7 @@ var speed = 60
 var health_current = 7
 var health_max = 12
 
-var lvl = 5
+var lvl = 0
 var score_current = 48
 var score_max = 64
 
@@ -29,6 +31,8 @@ var speed_add_mana = 1
 
 
 func _ready():
+	score_current = 0
+	score_max = level[lvl]
 	health_bar.set_param(health_current,health_max,score_current,score_max,mana_current,mana_max)
 	randomize()
 	anim.play(current_anim)
@@ -95,10 +99,14 @@ func _process(delta):
 	if health_current < 0:
 		health_current = 0
 	
-	if (score_current > score_max):
-		score_current = score_max
-	if score_current < 0:
-		score_current = 0
+	if (score_current >= score_max):
+		if (lvl < level.size()-1):
+			score_current = score_current - score_max
+			lvl += 1
+			score_max = level[lvl]
+		else:
+			score_current = score_max
+		
 	
 	if (mana_current > mana_max):
 		mana_current = mana_max
