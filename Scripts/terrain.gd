@@ -36,88 +36,93 @@ func create_texture(type):
 		# Потолок
 		var roof_tex = ImageTexture.new()
 		var roof_color = Color("#8f563b")
-		
-		var image = Image(10,10,false,4)
-		for i in range (0,10):
-			for j in range (0,10):
-				var chance  = 0.0
-				for q in range(0,12):
-					chance+=(randi()%1001)*0.001
-				chance-=6
-				if chance > 0:
+		var image = Image(40,40,false,4)
+		for tex in range(0,16):
+			image = Image(40,40,false,4)
+			roof_tex = ImageTexture.new()
+			for i in range (0,40):
+				for j in range (0,40):
+					var chance  = 0.0
+					for q in range(0,12):
+						chance+=(randi()%1001)*0.001
+					chance-=6
+					if chance > 0:
+						var offset = randf()/25
+						image.put_pixel(i,j,Color(roof_color.r-offset,roof_color.g-offset,roof_color.b-offset))
+					else:
+						var offset = randf()/25
+						image.put_pixel(i,j,Color(roof_color.r-offset,roof_color.g-offset,roof_color.b-offset,0))
+					
+			for i in range (2,38):
+				for j in range (2,38):
 					var offset = randf()/25
 					image.put_pixel(i,j,Color(roof_color.r-offset,roof_color.g-offset,roof_color.b-offset))
-				else:
-					var offset = randf()/25
-					image.put_pixel(i,j,Color(roof_color.r-offset,roof_color.g-offset,roof_color.b-offset,0))
-				
-		for i in range (1,9):
-			for j in range (1,9):
-				var offset = randf()/25
-				image.put_pixel(i,j,Color(roof_color.r-offset,roof_color.g-offset,roof_color.b-offset))
-		
-		roof_tex.create_from_image(image)
-		roof_tex.set_flags(0)
-		roof.get_tileset().tile_set_texture(3,roof_tex)
-		roof.get_tileset().tile_set_region(3, Rect2(0,0,10,10))
-		roof.get_tileset().tile_set_texture(0,roof_tex)
-		roof.get_tileset().tile_set_region(0, Rect2(0,0,10,10))
+			
+			roof_tex.create_from_image(image)
+			roof_tex.set_flags(0)
+			roof.get_tileset().tile_set_texture(tex,roof_tex)
+			roof.get_tileset().tile_set_region(tex, Rect2(0,0,40,40))
 		# Пол
 		var ground_tex = ImageTexture.new()
 		var ground_color = Color ("#d9a066")
-		
-		var image = Image(8,8,false,3)
-		for i in range (0,8):
-			for j in range (0,8):
-				var offset = randf()/50
-				image.put_pixel(i,j,Color(ground_color.r-offset,ground_color.g-offset,ground_color.b-offset))
-		
-		ground_tex.create_from_image(image)
-		ground_tex.set_flags(0)
-		roof.get_tileset().tile_set_texture(2,ground_tex)
-		roof.get_tileset().tile_set_region(2, Rect2(0,0,8,8))
+		var image = Image(32,32,false,3)
+		for tex in range(0,16):
+			ground_tex = ImageTexture.new()
+			image = Image(32,32,false,3)
+			for i in range (0,32):
+				for j in range (0,32):
+					var offset = randf()/50
+					image.put_pixel(i,j,Color(ground_color.r-offset,ground_color.g-offset,ground_color.b-offset))
+			
+			ground_tex.create_from_image(image)
+			ground_tex.set_flags(0)
+			ground.get_tileset().tile_set_texture(tex,ground_tex)
+			ground.get_tileset().tile_set_region(tex, Rect2(0,0,32,32))
 		# Стены
 		var wall_tex = ImageTexture.new()
 		var wall_color = Color ("#696a6a")
-		image = Image(8,8,false,4)
+		var image = Image(32,32,false,4)
 		var wall_points_color = Color("#847e87")
 		var roof_points = [2,4,5]
 		var ground_points = [2,3,7]
-		for i in range (0,8):
-			for j in range (0,4):
-				if (j == 0 and (roof_points.find(i) != -1)):
-					image.put_pixel(i,j,roof_color)
-				elif (j == 3 and (ground_points.find(i) != -1)):
-					image.put_pixel(i,j,ground_color)
-				elif (randi()%2 == 0):
-					image.put_pixel(i,j, wall_points_color)
-				else:
-					image.put_pixel(i,j,wall_color)
-			for j in range (4,8):
-				if (j<7):
-					image.put_pixel(i,j,Color(0,0,0,0.1))
-				elif (j == 7 and (roof_points.find(i) != -1)):
-					image.put_pixel(i,j,Color(0,0,0,0.1))
-		
-		wall_tex.create_from_image(image)
-		wall_tex.set_flags(0)
-		roof.get_tileset().tile_set_texture(1,wall_tex)
-		roof.get_tileset().tile_set_region(1, Rect2(0,0,8,8))
+		for tex in range(0,16):
+			wall_tex = ImageTexture.new()
+			image = Image(32,32,false,4)
+			for i in range (0,32):
+				for j in range (0,16):
+					if (j == 0 and (roof_points.find(i) != -1)):
+						image.put_pixel(i,j,roof_color)
+					elif (j == 3 and (ground_points.find(i) != -1)):
+						image.put_pixel(i,j,ground_color)
+					elif (randi()%2 == 0):
+						image.put_pixel(i,j, wall_points_color)
+					else:
+						image.put_pixel(i,j,wall_color)
+				for j in range (16,32):
+					if (j<7):
+						image.put_pixel(i,j,Color(0,0,0,0.1))
+					elif (j == 7 and (roof_points.find(i) != -1)):
+						image.put_pixel(i,j,Color(0,0,0,0.1))
+			
+			wall_tex.create_from_image(image)
+			wall_tex.set_flags(0)
+			walls.get_tileset().tile_set_texture(tex,wall_tex)
+			walls.get_tileset().tile_set_region(tex, Rect2(0,0,32,32))
 		
 		for i in range(0,8):
 			var shadow_tex = ImageTexture.new()
-			image = Image(16,16,false,4)
-			for j in range(0,16):
-				for k in range(0,16):
-					var saturation = 16-abs(j-8)-abs(k-8)
-					if randi()%16 < saturation:
+			image = Image(64,64,false,4)
+			for j in range(0,64):
+				for k in range(0,64):
+					var saturation = 64-abs(j-32)-abs(k-32)
+					if randi()%64 < saturation:
 						image.put_pixel(j,k,Color(0,0,0))
 					else:
 						image.put_pixel(j,k,Color(0,0,0,0))
 			shadow_tex.create_from_image(image)
 			shadow_tex.set_flags(0)
 			shadow.get_tileset().tile_set_texture(i,shadow_tex)
-			shadow.get_tileset().tile_set_region(i,Rect2(0,0,16,16))
+			shadow.get_tileset().tile_set_region(i,Rect2(0,0,64,64))
 
 func gen(iter,radius):
 	if i == 0:
@@ -203,29 +208,29 @@ func gen(iter,radius):
 	
 	
 func set_cell(pos):
-	ground.set_cell(pos.x,pos.y,2)
+	ground.set_cell(pos.x,pos.y,randi()%16)
 
 func set_roof(x_l,x_r,y_t,y_b):
 	for x in range(x_l,x_r):
 		for y in range(y_t,y_b):
-			if ground.get_cell(x,y) == 2:
+			if ground.get_cell(x,y) != -1:
 				if ground.get_cell(x,y+1) == -1:
-					roof.set_cell(x,y+1,0)
+					roof.set_cell(x,y+1,randi()%16)
 				if ground.get_cell(x+1,y) == -1:
-					roof.set_cell(x+1,y,3)
+					roof.set_cell(x+1,y,randi()%16)
 				if ground.get_cell(x-1,y) == -1:
-					roof.set_cell(x-1,y,3)
+					roof.set_cell(x-1,y,randi()%16)
 				if ground.get_cell(x,y-1) == -1:
-					roof.set_cell(x,y-1,3)
-					walls.set_cell(x,y-1,1)
+					roof.set_cell(x,y-1,randi()%16)
+					walls.set_cell(x,y-1,randi()%16)
 				if ground.get_cell(x-1,y-1) == -1:
-					roof.set_cell(x-1,y-1,3)
+					roof.set_cell(x-1,y-1,randi()%16)
 				if ground.get_cell(x+1,y-1) == -1:
-					roof.set_cell(x+1,y-1,3)
+					roof.set_cell(x+1,y-1,randi()%16)
 				if ground.get_cell(x-1,y+1) == -1:
-					roof.set_cell(x-1,y+1,3)
+					roof.set_cell(x-1,y+1,randi()%16)
 				if ground.get_cell(x+1,y+1) == -1:
-					roof.set_cell(x+1,y+1,3)
+					roof.set_cell(x+1,y+1,randi()%16)
 	for x in range(x_l,x_r):
 		for y in range(y_t,y_b):
 			if roof.get_cell(x,y) == -1:

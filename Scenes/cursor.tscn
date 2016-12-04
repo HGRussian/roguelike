@@ -13,6 +13,8 @@ script/source = "extends AnimatedSprite\n\nfunc _ready():\n\tset_process(true)\n
 
 [node name="cursor" type="AnimatedSprite"]
 
+z/z = 10
+z/relative = false
 frames = SubResource( 1 )
 animation = "default"
 playing = true
