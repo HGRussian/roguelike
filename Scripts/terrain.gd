@@ -36,12 +36,12 @@ func create_texture(type):
 		# Потолок
 		var roof_tex = ImageTexture.new()
 		var roof_color = Color("#8f563b")
-		var image = Image(40,40,false,4)
+		var image = Image(20,20,false,4)
 		for tex in range(0,16):
-			image = Image(40,40,false,4)
+			image = Image(20,20,false,4)
 			roof_tex = ImageTexture.new()
-			for i in range (0,40):
-				for j in range (0,40):
+			for i in range (0,20):
+				for j in range (0,20):
 					var chance  = 0.0
 					for q in range(0,12):
 						chance+=(randi()%1001)*0.001
@@ -53,76 +53,76 @@ func create_texture(type):
 						var offset = randf()/25
 						image.put_pixel(i,j,Color(roof_color.r-offset,roof_color.g-offset,roof_color.b-offset,0))
 					
-			for i in range (2,38):
-				for j in range (2,38):
+			for i in range (1,19):
+				for j in range (1,19):
 					var offset = randf()/25
 					image.put_pixel(i,j,Color(roof_color.r-offset,roof_color.g-offset,roof_color.b-offset))
 			
 			roof_tex.create_from_image(image)
 			roof_tex.set_flags(0)
 			roof.get_tileset().tile_set_texture(tex,roof_tex)
-			roof.get_tileset().tile_set_region(tex, Rect2(0,0,40,40))
+			roof.get_tileset().tile_set_region(tex, Rect2(0,0,20,20))
 		# Пол
 		var ground_tex = ImageTexture.new()
 		var ground_color = Color ("#d9a066")
-		var image = Image(32,32,false,3)
+		var image = Image(16,16,false,3)
 		for tex in range(0,16):
 			ground_tex = ImageTexture.new()
-			image = Image(32,32,false,3)
-			for i in range (0,32):
-				for j in range (0,32):
+			image = Image(16,16,false,3)
+			for i in range (0,16):
+				for j in range (0,16):
 					var offset = randf()/50
 					image.put_pixel(i,j,Color(ground_color.r-offset,ground_color.g-offset,ground_color.b-offset))
 			
 			ground_tex.create_from_image(image)
 			ground_tex.set_flags(0)
 			ground.get_tileset().tile_set_texture(tex,ground_tex)
-			ground.get_tileset().tile_set_region(tex, Rect2(0,0,32,32))
+			ground.get_tileset().tile_set_region(tex, Rect2(0,0,16,16))
 		# Стены
 		var wall_tex = ImageTexture.new()
 		var wall_color = Color ("#696a6a")
-		var image = Image(32,32,false,4)
+		var image = Image(16,16,false,4)
 		var wall_points_color = Color("#847e87")
 		var roof_points = [2,4,5]
 		var ground_points = [2,3,7]
 		for tex in range(0,16):
 			wall_tex = ImageTexture.new()
-			image = Image(32,32,false,4)
-			for i in range (0,32):
-				for j in range (0,16):
+			image = Image(16,16,false,4)
+			for i in range (0,16):
+				for j in range (0,8):
 					if (j == 0 and (roof_points.find(i) != -1)):
 						image.put_pixel(i,j,roof_color)
-					elif (j == 3 and (ground_points.find(i) != -1)):
+					elif (j == 7 and (ground_points.find(i) != -1)):
 						image.put_pixel(i,j,ground_color)
 					elif (randi()%2 == 0):
 						image.put_pixel(i,j, wall_points_color)
 					else:
 						image.put_pixel(i,j,wall_color)
-				for j in range (16,32):
-					if (j<7):
+				for j in range (8,16):
+					if (j<15):
 						image.put_pixel(i,j,Color(0,0,0,0.1))
-					elif (j == 7 and (roof_points.find(i) != -1)):
+					elif (j == 15 and (roof_points.find(i) != -1)):
 						image.put_pixel(i,j,Color(0,0,0,0.1))
 			
 			wall_tex.create_from_image(image)
 			wall_tex.set_flags(0)
 			walls.get_tileset().tile_set_texture(tex,wall_tex)
-			walls.get_tileset().tile_set_region(tex, Rect2(0,0,32,32))
+			walls.get_tileset().tile_set_region(tex, Rect2(0,0,16,16))
 		
 		for i in range(0,8):
 			var shadow_tex = ImageTexture.new()
-			image = Image(64,64,false,4)
-			for j in range(0,64):
-				for k in range(0,64):
-					var saturation = 64-abs(j-32)-abs(k-32)
-					if randi()%64 < saturation:
+			image = Image(32,32,false,4)
+			for j in range(0,32):
+				for k in range(0,32):
+					var saturation = 32-abs(j-16)-abs(k-16)
+					if randi()%32 < saturation:
 						image.put_pixel(j,k,Color(0,0,0))
 					else:
 						image.put_pixel(j,k,Color(0,0,0,0))
 			shadow_tex.create_from_image(image)
 			shadow_tex.set_flags(0)
 			shadow.get_tileset().tile_set_texture(i,shadow_tex)
-			shadow.get_tileset().tile_set_region(i,Rect2(0,0,64,64))
+			shadow.get_tileset().tile_set_region(i,Rect2(0,0,32,32))
 
 func gen(iter,radius):
 	if i == 0:

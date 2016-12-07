@@ -1,10 +1,9 @@
-[gd_scene load_steps=15 format=1]
+[gd_scene load_steps=14 format=1]
 
 [ext_resource path="res://Scripts/player_controller.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://Art/shadow_n.png" type="Texture" id=3]
 [ext_resource path="res://Art/characters/test8px_player/t8pp.png" type="Texture" id=4]
-[ext_resource path="res://Art/characters/first32.png" type="Texture" id=5]
 
 [sub_resource type="Animation" id=1]
 
@@ -169,9 +168,5 @@ transform/pos = Vector2( 0, 0.5 )
 shape = SubResource( 9 )
 trigger = false
 _update_shape_index = 0
-
-[node name="Sprite2" type="Sprite" parent="."]
-
-texture = ExtResource( 5 )
 
 
